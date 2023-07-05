@@ -1,0 +1,18 @@
+Make bash script which does the following:
+- if error occurs in script, print the location and exit immediately. use bash's internal mechanism.
+- the script has ip_ns function which does ip netns exec command for given netns argument.
+  This function is used by remaining portion.
+- create a network namespaces named router.
+  If that netns exists, start by deleting them.
+- create two veth pairs:
+  - client-veth0 and router-veth0
+  - server-veth0 and router-veth1
+- move router-veth0 and router-veth1 into router namespace
+- set ip addresses of each interface
+  : client-veth0 - 10.10.1.2/24
+  : server-veth0 - 10.10.2.2/24 and 10.10.2.3/23
+  : router-veth0 - 10.10.1.1/24
+  : server-veth0 - 10.10.2.1/24
+- up all generated interfaces.
+
+

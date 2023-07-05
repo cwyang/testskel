@@ -35,6 +35,7 @@ our @EXPORT = qw(
     exec_mruby_unittest
     exec_fuzzer
     spawn_server
+    spawn_server_with_ns
     spawn_h2o
     spawn_h2o_raw
     empty_ports
@@ -182,6 +183,15 @@ sub exec_fuzzer {
     is system("$prog -close_fd_mask=3 -runs=1 -max_len=16384 fuzz/$name-corpus < /dev/null"), 0;
     done_testing;
 }
+sub spawn_server_with_ns {
+    my $ns = shift;
+    my %args = @_;
+    $args{ns} = $ns;
+    $args{ns_argv} = [ qw(ip netns exec), $ns, @{$args{argv}} ];    
+    #print "@{$args{argv}}\n";
+	
+    spawn_server(%args);
+}
 
 # spawns a child process and returns a guard object that kills the process when destroyed
 sub spawn_server {
@@ -238,7 +248,11 @@ sub spawn_server {
         return wantarray ? ($guard, $pid) : $guard;
     }
     # child process
-    exec @{$args{argv}};
+    if (defined $args{ns}) {
+	exec @{$args{ns_argv}};
+    } else {
+	exec @{$args{argv}};
+    }
     die "failed to exec $args{argv}->[0]:$!";
 }
 
