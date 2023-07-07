@@ -48,4 +48,6 @@ ip_ns client ip route add default via 10.10.1.1
 ip_ns router ip route add default via 10.10.1.1
 ip_ns server ip route add default via 10.10.2.1
 
+ip_ns router sysctl -w net.ipv4.ip_forward=1
+
 echo "Network namespaces, veth pairs, IP addresses, and routes have been set up."

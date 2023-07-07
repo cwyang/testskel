@@ -11,5 +11,6 @@ Make bash script which does the following:
   The router veth interface name is server-veth0, and has IP address 10.10.2.1/24
   The server veth interface name is veth0, and has two IP addresses 10.10.2.2/24 and 10.10.2.3/24
 - up all generated interfaces.
+- enable ipv4 ip_forward on router network namespace.
 - In other netns, default route is set up to veth interface.
 
