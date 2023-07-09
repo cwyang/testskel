@@ -22,6 +22,7 @@ use Symbol 'gensym';
 use Test::More;
 use Time::HiRes qw(sleep gettimeofday tv_interval);
 use Carp;
+use File::Basename;
 
 use base qw(Exporter);
 our @EXPORT = qw(
@@ -200,8 +201,9 @@ sub spawn_server {
     my $pid = fork;
     die "fork failed:$!"
         unless defined $pid;
+    my $servername = basename($args{argv}->[0]);
     if ($pid != 0) {
-        print STDERR "spawning $args{argv}->[0]... ";
+        print STDERR "spawning $servername... [@{ $args{argv} }]\n";
         if ($args{is_ready}) {
             for (my $i = 0; !$args{is_ready}->(); ++$i) {
                 if (waitpid($pid, WNOHANG) == $pid) {
