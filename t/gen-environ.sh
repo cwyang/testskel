@@ -36,6 +36,7 @@ ip_ns router ip addr add 10.10.1.1/24 dev client-veth0
 ip_ns router ip addr add 10.10.2.1/24 dev server-veth0
 ip_ns server ip addr add 10.10.2.2/24 dev router-veth0
 ip_ns server ip addr add 10.10.2.3/24 dev router-veth0
+ip_ns server ip addr add 10.10.2.4/24 dev router-veth0
 
 # Bring up interfaces
 ip_ns client ip link set dev veth0 up

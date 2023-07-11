@@ -213,7 +213,6 @@ sub spawn_server {
                     if $i > 100;
                 sleep 0.1;
             }
-            print STDERR "done\n";
         }
         my $guard = make_guard(sub {
             return if $$ != $ppid;
@@ -248,6 +247,9 @@ sub spawn_server {
             }
         });
         return wantarray ? ($guard, $pid) : $guard;
+    }
+    if ($args{close_stdout}) {
+	close(STDOUT);
     }
     # child process
     if (defined $args{ns}) {

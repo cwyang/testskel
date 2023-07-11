@@ -69,6 +69,7 @@ subtest 'ICMP' => sub {
     $x = "ip netns exec ";
     is(system($x . "client ping -c 1 -W 1 10.10.2.2 > /dev/null"), 0);
     is(system($x . "client ping -c 1 -W 1 10.10.2.3 > /dev/null"), 0);
+    is(system($x . "client ping -c 1 -W 1 10.10.2.4 > /dev/null"), 0);
     is(system($x . "server ping -c 1 -W 1 10.10.1.2 > /dev/null"), 0);
 };
 
