@@ -1,0 +1,20 @@
+create host-interface name client-veth0
+set interface ip address host-client-veth0 10.10.1.1/24
+set interface state host-client-veth0 up
+ip route add 10.10.1.0/24 via 10.10.1.2
+create host-interface name server-veth0
+set interface ip address host-server-veth0 10.10.2.1/24
+set interface state host-server-veth0 up
+ip route add 10.10.2.0/24 via 10.10.2.2
+ip route add 10.10.2.3/32 via 10.10.2.2
+show inter
+set acl-plugin acl deny proto 6 dst 10.10.2.3/32 dport 8888 desc deny-host-port
+set acl-plugin acl permit+reflect dst 10.10.2.2/31 desc allow-host
+set acl-plugin acl permit+reflect proto 6 dport 8888, permit+reflect proto 17 dport 8888 desc allow-port
+set acl-plugin acl deny desc deny-all
+set acl-plugin interface host-client-veth0 input acl 0
+set acl-plugin interface host-client-veth0 input acl 1
+set acl-plugin interface host-client-veth0 input acl 2
+set acl-plugin interface host-client-veth0 input acl 3
+set acl-plugin interface host-client-veth0 output acl 3
+show acl-plugin interface sw_if_index 1 acl
